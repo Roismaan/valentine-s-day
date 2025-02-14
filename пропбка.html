@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>З Днем Святого Валентина ❤️</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <style>
+        :root {
+            --primary-color: #d63384;
+            --bg-color: #fff0f3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+            padding: 2rem 1rem;
+            background: linear-gradient(-45deg, #ffe6ea, #ffd1dc, #ffb6c1, #ffc0cb, #ff69b4, #ff1493, #ff69b4, #ff1493);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            position: relative;
+        }
+
+        /* Блискітки */
+        .sparkles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .sparkle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: sparkle 3s infinite;
+            box-shadow: 0 0 15px #fff,
+                        0 0 30px #fff,
+                        0 0 45px #fff;
+        }
+
+        @keyframes sparkle {
+            0% { 
+                transform: scale(0) rotate(0deg); 
+                opacity: 0;
+            }
+            50% { 
+                transform: scale(1.5) rotate(180deg); 
+                opacity: 0.8;
+            }
+            100% { 
+                transform: scale(0) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1.5s ease-out;
+            perspective: 1000px;
+        }
+
+        .title {
+            color: var(--primary-color);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: titleGlow 2s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px #ff69b4,
+                           0 0 20px #ff69b4,
+                           0 0 30px #ff69b4;
+            }
+            50% { 
+                text-shadow: 0 0 20px #ff1493,
+                           0 0 30px #ff1493,
+                           0 0 40px #ff1493;
+            }
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .gallery {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .swiper {
+            width: 100%;
+            height: 400px;
+        }
+
+        .swiper-slide {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .swiper-slide-active {
+            opacity: 1;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            filter: blur(5px);
+            transition: filter 1s ease;
+        }
+
+        .music-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.2);
+            margin: 0 auto;
+            display: block;
+        }
+
+        .music-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(214, 51, 132, 0.3);
+        }
+
+        .music-button.playing {
+            animation: pulse 2s infinite;
+        }
+
+        .surprise-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .surprise-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(214, 51, 132, 0.3);
+        }
+
+        .surprise-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.5s ease;
+            max-width: 80vw;
+            width: 400px;
+            text-align: center;
+        }
+
+        .surprise-card.active {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .surprise-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .surprise-card p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .close-card {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        .heart {
+            position: fixed;
+            font-size: 1.5rem;
+            user-select: none;
+            pointer-events: none;
+            animation: floatHeart 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 5px rgba(255, 105, 180, 0.5));
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-50vh) rotate(180deg) scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="sparkles"></div>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">З Днем Святого Валентина! ❤️</h1>
+            <p class="subtitle">Ti amo!</p>
+        </header>
+
+        <div class="gallery">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                    <img src="photo_1.jpg" alt="фото 1">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="photo_2.jpg" alt="фото 2">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="photo_3.jpg" alt="фото 3">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="photo_4.jpg" alt="фото 4">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="photo_5.jpg" alt="фото 5">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="photo_6.jpg" alt="фото 6">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="photo_7.jpg" alt="фото 7">
+                    </div>
+                    </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+
+        <button class="music-button" onclick="toggleMusic()">
+            <span class="button-text">Жмякни</span> 
+            <span class="button-icon">😉</span>
+        </button>
+    </div>
+
+    <button class="surprise-button" onclick="showSurprise()">
+        Відкрити сюрприз 🎁
+    </button>
+
+    <div class="surprise-card">
+        <button class="close-card" onclick="closeSurprise()">×</button>
+        <h3>Спеціально для тебе ❤️</h3>
+        <p>У цей особливий день хочу сказати тобі найголовніше: ти – найцінніше, що є в моєму житті.<br>
+        Ти наповнюєш кожен мій день світлом, любов’ю та теплом,<br>
+        робиш його яскравішим і щасливішим.<br>
+        Дякую тобі за твою присутність, за кожну мить, що ми розділяємо разом.<br>
+        Без тебе світ був би іншим… менш теплим, менш чарівним.<br>
+        Ти – моє натхнення, моя радість і моя любов.❤️</p>
+        <div class="card-hearts"></div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        // Initialize Swiper
+        const swiper = new Swiper('.swiper', {
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true
+            },
+            speed: 1000,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+
+        // Music control
+        let isPlaying = false;
+        const music = document.getElementById('bg-music');
+        const musicButton = document.querySelector('.music-button');
+        const slides = document.querySelectorAll('.swiper-slide img');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicButton.classList.remove('playing');
+                musicButton.querySelector('.button-text').textContent = 'Жмякни';
+                // Додаємо розмиття при паузі
+                slides.forEach(slide => {
+                    slide.style.filter = 'blur(5px)';
+                });
+              } else {
+                music.play();
+                musicButton.classList.add('playing');
+                musicButton.querySelector('.button-text').textContent = 'Тицьни';
+           
+                // Прибираємо розмиття при відтворенні
+                slides.forEach(slide => {
+                    slide.style.filter = 'none';
+                });
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Sparkles
+        function createSparkles() {
+            const sparklesContainer = document.querySelector('.sparkles');
+            const sparkleCount = 50;
+
+            for (let i = 0; i < sparkleCount; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                sparklesContainer.appendChild(sparkle);
+            }
+        }
+
+        // Floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        // Parallax effect
+        document.addEventListener('mousemove', (e) => {
+            const hearts = document.querySelectorAll('.heart');
+            const mouseX = e.clientX / window.innerWidth - 0.5;
+            const mouseY = e.clientY / window.innerHeight - 0.5;
+
+            hearts.forEach(heart => {
+                const depth = parseFloat(heart.style.animationDuration) || 3;
+                const moveX = mouseX * 50 * (depth / 3);
+                const moveY = mouseY * 50 * (depth / 3);
+                heart.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+
+        // Surprise card
+        function showSurprise() {
+            const card = document.querySelector('.surprise-card');
+            card.classList.add('active');
+
+            // Create hearts animation inside card
+            const cardHearts = document.querySelector('.card-hearts');
+            cardHearts.innerHTML = ''; // Clear existing hearts
+            for (let i = 0; i < 5; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'absolute';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animation = `floatHeart ${Math.random() * 2 + 2}s ease-in-out infinite`;
+                cardHearts.appendChild(heart);
+            }
+        }
+
+        function closeSurprise() {
+            const card = document.querySelector('.surprise-card');
+            card.classList.remove('active');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createSparkles();
+            setInterval(createHeart, 200);
+
+            // Initial burst of hearts
+            for(let i = 0; i < 10; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        });
+    </script>
+</body>
+</html>
