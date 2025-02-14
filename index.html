@@ -77,6 +77,10 @@
             margin: 0 auto;
             position: relative;
             z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
         }
 
         .header {
@@ -117,7 +121,7 @@
         .gallery {
             width: 100%;
             max-width: 800px;
-            margin: 0 auto 3rem;
+            margin: 0 auto;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
@@ -146,49 +150,45 @@
             transition: filter 1s ease;
         }
 
-        .music-button {
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .music-button, .surprise-button {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
             padding: 1rem 2rem;
             font-size: 1.2rem;
-            background: var(--primary-color);
-            color: white;
-            border: none;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.2);
-            margin: 0 auto;
-            display: block;
         }
 
-        .music-button:hover {
+        .music-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.2);
+        }
+
+        .surprise-button {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .music-button:hover, .surprise-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(214, 51, 132, 0.3);
         }
 
         .music-button.playing {
             animation: pulse 2s infinite;
-        }
-
-        .surprise-button {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            padding: 1rem 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid var(--primary-color);
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-
-        .surprise-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(214, 51, 132, 0.3);
         }
 
         .surprise-card {
@@ -275,14 +275,14 @@
     <div class="container">
         <header class="header">
             <h1 class="title">З Днем Святого Валентина! ❤️</h1>
-            <p class="subtitle">Ti amo!</p>
+            <p class="subtitle">Ti amo😘</p>
         </header>
 
         <div class="gallery">
             <div class="swiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
-                    <img src="photo_1.jpg" alt="фото 1">
+                        <img src="photo_1.jpg" alt="фото 1">
                     </div>
                     <div class="swiper-slide">
                         <img src="photo_2.jpg" alt="фото 2">
@@ -302,28 +302,30 @@
                     <div class="swiper-slide">
                         <img src="photo_7.jpg" alt="фото 7">
                     </div>
-                    </div>
+                </div>
                 <div class="swiper-pagination"></div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
         </div>
 
-        <button class="music-button" onclick="toggleMusic()">
-            <span class="button-text">Жмякни</span> 
-            <span class="button-icon">😉</span>
-        </button>
+        <div class="button-container">
+            <button class="music-button" onclick="toggleMusic()">
+                <span class="button-text">Жмякни</span> 
+                <span class="button-icon">😉</span>
+            </button>
+            
+            <button class="surprise-button" onclick="showSurprise()">
+                Відкрий послання🥰
+            </button>
+        </div>
     </div>
-
-    <button class="surprise-button" onclick="showSurprise()">
-        Відкрити сюрприз 🎁
-    </button>
 
     <div class="surprise-card">
         <button class="close-card" onclick="closeSurprise()">×</button>
         <h3>Спеціально для тебе ❤️</h3>
         <p>У цей особливий день хочу сказати тобі найголовніше: ти – найцінніше, що є в моєму житті.<br>
-        Ти наповнюєш кожен мій день світлом, любов’ю та теплом,<br>
+        Ти наповнюєш кожен мій день світлом, любов'ю та теплом,<br>
         робиш його яскравішим і щасливішим.<br>
         Дякую тобі за твою присутність, за кожну мить, що ми розділяємо разом.<br>
         Без тебе світ був би іншим… менш теплим, менш чарівним.<br>
@@ -370,16 +372,13 @@
                 music.pause();
                 musicButton.classList.remove('playing');
                 musicButton.querySelector('.button-text').textContent = 'Жмякни';
-                // Додаємо розмиття при паузі
                 slides.forEach(slide => {
                     slide.style.filter = 'blur(5px)';
                 });
-              } else {
+            } else {
                 music.play();
                 musicButton.classList.add('playing');
                 musicButton.querySelector('.button-text').textContent = 'Тицьни';
-           
-                // Прибираємо розмиття при відтворенні
                 slides.forEach(slide => {
                     slide.style.filter = 'none';
                 });
